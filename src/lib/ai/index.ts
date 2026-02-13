@@ -43,8 +43,9 @@ export async function generateMatchWithFallback(
     const result = await provider.generateMatch(userInput);
     return { result, usedProvider: mainProvider };
   } catch (error) {
-    console.warn(
-      `Primary provider (${mainProvider}) failed, trying fallback (${fallbackProvider})`
+    console.error(
+      `Primary provider (${mainProvider}) failed:`,
+      error instanceof Error ? error.message : String(error)
     );
 
     try {
@@ -52,8 +53,13 @@ export async function generateMatchWithFallback(
       const result = await provider.generateMatch(userInput);
       return { result, usedProvider: fallbackProvider };
     } catch (fallbackError) {
-      console.error("Both providers failed:", fallbackError);
-      throw new Error("All AI providers failed");
+      console.error(
+        `Fallback provider (${fallbackProvider}) failed:`,
+        fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
+      );
+      throw new Error(
+        `All AI providers failed. Primary (${mainProvider}): ${error instanceof Error ? error.message : String(error)}; Fallback (${fallbackProvider}): ${fallbackError instanceof Error ? fallbackError.message : String(fallbackError)}`
+      );
     }
   }
 }
