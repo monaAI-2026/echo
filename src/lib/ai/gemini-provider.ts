@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import { AIProvider, PoemMatch } from "./types";
 import { buildPrompt } from "./prompt";
 
@@ -40,17 +40,26 @@ export class GeminiProvider implements AIProvider {
     const prompt = buildPrompt(userInput);
 
     try {
-      const model = this.client.getGenerativeModel({ model: this.model });
+      const model = this.client.getGenerativeModel({
+        model: this.model,
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: SchemaType.OBJECT,
+            properties: {
+              reply: { type: SchemaType.STRING },
+              source_name: { type: SchemaType.STRING },
+              source_era: { type: SchemaType.STRING },
+              source_location: { type: SchemaType.STRING },
+            },
+            required: ["reply", "source_name", "source_era", "source_location"],
+          },
+        },
+      });
 
       const result = await model.generateContent(prompt);
       const response = result.response;
       const text = response.text();
-
-      // 提取 JSON（处理可能的 markdown 代码块）
-      let jsonText = text.trim();
-      if (jsonText.startsWith("```")) {
-        jsonText = jsonText.replace(/```json?\n?/g, "").replace(/```\n?/g, "");
-      }
 
       interface SideraResponse {
         reply: string;
@@ -59,7 +68,7 @@ export class GeminiProvider implements AIProvider {
         source_location: string;
       }
 
-      const sideraResult = JSON.parse(jsonText) as SideraResponse;
+      const sideraResult = JSON.parse(text) as SideraResponse;
 
       const poemMatch: PoemMatch = {
         quote: sideraResult.reply,
