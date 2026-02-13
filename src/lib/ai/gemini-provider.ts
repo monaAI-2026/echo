@@ -54,6 +54,10 @@ export class GeminiProvider implements AIProvider {
             },
             required: ["reply", "source_name", "source_era", "source_location"],
           },
+          // @ts-expect-error -- thinkingConfig is supported by the API but not yet in SDK types
+          thinkingConfig: {
+            thinkingBudget: 0,
+          },
         },
       });
 
