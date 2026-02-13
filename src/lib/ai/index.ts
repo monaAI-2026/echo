@@ -39,22 +39,26 @@ export async function generateMatchWithFallback(
     mainProvider === "claude" ? "gemini" : "claude";
 
   try {
+    const t0 = Date.now();
     const provider = getAIProvider(mainProvider);
     const result = await provider.generateMatch(userInput);
+    console.log(`[ai] primary=${mainProvider}, time=${Date.now() - t0}ms`);
     return { result, usedProvider: mainProvider };
   } catch (error) {
     console.error(
-      `Primary provider (${mainProvider}) failed:`,
+      `[ai] primary ${mainProvider} failed (${Date.now()}):`,
       error instanceof Error ? error.message : String(error)
     );
 
     try {
+      const t1 = Date.now();
       const provider = getAIProvider(fallbackProvider);
       const result = await provider.generateMatch(userInput);
+      console.log(`[ai] fallback=${fallbackProvider}, time=${Date.now() - t1}ms`);
       return { result, usedProvider: fallbackProvider };
     } catch (fallbackError) {
       console.error(
-        `Fallback provider (${fallbackProvider}) failed:`,
+        `[ai] fallback ${fallbackProvider} failed:`,
         fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
       );
       throw new Error(

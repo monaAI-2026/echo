@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateMatchWithFallback } from "@/lib/ai";
 
 export async function POST(req: NextRequest) {
+  const startTime = Date.now();
   try {
     const { input } = await req.json();
 
@@ -12,9 +13,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const trimmedInput = input.trim();
+
     // 使用带降级的 AI 调用
     const { result, usedProvider } = await generateMatchWithFallback(
-      input.trim()
+      trimmedInput
+    );
+
+    const duration = Date.now() - startTime;
+    console.log(
+      `[generate] provider=${usedProvider}, time=${duration}ms, input="${trimmedInput.slice(0, 50)}", reply="${result.quote?.slice(0, 30)}"`
     );
 
     return NextResponse.json({
@@ -23,10 +31,12 @@ export async function POST(req: NextRequest) {
       meta: {
         provider: usedProvider,
         timestamp: new Date().toISOString(),
+        duration,
       },
     });
   } catch (error) {
-    console.error("Generate API error:", error);
+    const duration = Date.now() - startTime;
+    console.error(`[generate] FAILED, time=${duration}ms, error:`, error);
 
     return NextResponse.json(
       {
