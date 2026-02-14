@@ -104,16 +104,16 @@ const MAX_OVERFLOW = 25.8 * 0.6; // ~15.5px – punctuation overflow ceiling
 const W = 340;
 const PX = 38;
 const CW = W - PX * 2; // 264
-const PT = 54;
-const PB = 58;
+const PT = 60;
+const PB = 62;
 const LABEL_H = 11;
 const LABEL_MB = 20;
 const MAIN_LH = 25.8 * 1.2; // 30.96
 const INFO_MT = 16;
 const INFO_H = 10;
-const DIV_MT = 38;
+const DIV_MT = 42;
 const DIV_H = 24;
-const DIV_MB = 28;
+const DIV_MB = 36;
 
 function getFonts() {
   const style = getComputedStyle(document.body);
@@ -152,7 +152,7 @@ function drawCard(ctx: CanvasRenderingContext2D, props: DrawCardProps): number {
     PT + sectionH(lines1.length) + DIV_MT + DIV_H + DIV_MB + sectionH(lines2.length) + PB;
 
   // Background
-  ctx.fillStyle = "#fafaf8";
+  ctx.fillStyle = "#FBFBFB";
   ctx.fillRect(0, 0, W, H);
 
   ctx.textBaseline = "top";
@@ -177,11 +177,11 @@ function drawCard(ctx: CanvasRenderingContext2D, props: DrawCardProps): number {
   y += INFO_MT;
   ctx.fillStyle = "rgba(217,44,61,0.65)";
   ctx.font = f.info;
-  ctx.fillText(
-    `${props.userName} / ${props.userTime} / ${props.userLocation}`,
-    PX,
-    y
-  );
+  const userInfoParts = [props.userName, props.userTime];
+  if (props.userLocation) {
+    userInfoParts.push(props.userLocation);
+  }
+  ctx.fillText(userInfoParts.join(" / "), PX, y);
   y += INFO_H;
 
   // ===== DIVIDER =====

@@ -36,7 +36,11 @@ export default function Home() {
     <div className="h-[100dvh] flex flex-col" style={{ background: "#EBE9E2" }}>
       {/* Header */}
       <header className="px-6 pt-7 sm:px-8 sm:pt-8">
-        <div className="flex items-baseline gap-1.5">
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-[3px] h-[12px] rounded-[1px] relative -top-[1px] ml-[2px]"
+            style={{ background: "rgba(217,44,61,0.8)" }}
+          />
           <span
             className="text-[15px]"
             style={{ fontFamily: "var(--font-jinghua), 'JingHua LaoSong', serif", color: "#1f1f1f" }}
@@ -53,7 +57,7 @@ export default function Home() {
       </header>
 
       {/* Centered input area */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 -mt-6">
+      <div className="flex-1 flex flex-col items-center justify-center px-6 -mt-20">
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
           <textarea
             value={input}
@@ -63,20 +67,16 @@ export default function Home() {
             disabled={isSubmitting}
             className="w-full max-w-[413px] h-[180px] text-[16px] font-bold leading-[1.2] px-[42px] pt-10 rounded-lg transition-all duration-300 ease-out disabled:opacity-50 disabled:cursor-not-allowed"
             style={{
-              fontFamily: "var(--font-jinghua), 'JingHua LaoSong', serif",
+              fontFamily: "var(--font-noto-serif-sc), 'Noto Serif SC', serif",
               color: "#1f1f1f",
-              background: "#fafaf8",
-              border: "1px solid rgba(0,0,0,0.06)",
+              background: "#FBFBFB",
+              border: "none",
               boxShadow: "0 4px 16px rgba(0,0,0,0.06)",
               resize: "none",
               outline: "none",
             }}
-            onFocus={(e) => {
-              e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)";
-            }}
-            onBlur={(e) => {
-              e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)";
-            }}
+            onFocus={() => {}}
+            onBlur={() => {}}
           />
 
           {/* Button */}
@@ -84,12 +84,12 @@ export default function Home() {
             <button
               type="submit"
               disabled={!input.trim() || isSubmitting}
-              className="text-[13px] tracking-[0.1em] rounded-full transition-all duration-300 cursor-pointer disabled:cursor-not-allowed"
+              className="text-[13px] tracking-[0.1em] rounded-full transition-all duration-300 cursor-pointer disabled:cursor-not-allowed disabled:opacity-100"
               style={{
                 fontFamily: "var(--font-noto-sans-sc), 'Noto Sans SC', sans-serif",
-                color: !input.trim() || isSubmitting ? "rgba(63,63,63,0.65)" : "#3F3F3F",
-                border: "1px solid rgba(0,0,0,0.15)",
-                background: "transparent",
+                color: "#fff",
+                border: "none",
+                background: "#1e1e1e",
                 width: "120px",
                 height: "42px",
                 display: "flex",
@@ -98,10 +98,10 @@ export default function Home() {
                 padding: 0,
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,0,0,0.3)";
+                if (input.trim() && !isSubmitting) e.currentTarget.style.background = "#333";
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = "rgba(0,0,0,0.15)";
+                if (input.trim() && !isSubmitting) e.currentTarget.style.background = "#1e1e1e";
               }}
             >
               {isSubmitting ? "发送中..." : "发送"}

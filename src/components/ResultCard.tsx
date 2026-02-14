@@ -55,8 +55,8 @@ export default function ResultCard({
       id="result-card"
       className="w-full max-w-[340px] rounded-none overflow-hidden transition-all duration-300 ease-out cursor-default mx-auto"
       style={{
-        background: "#fafaf8",
-        border: "1px solid rgba(0,0,0,0.06)",
+        background: "#FBFBFB",
+        border: "none",
         boxShadow: isHovered ? "0 8px 28px rgba(0,0,0,0.04)" : "0 4px 16px rgba(0,0,0,0.06)",
         transform: isHovered ? "scale(1.01) translateY(-2px)" : "scale(1) translateY(0)",
       }}

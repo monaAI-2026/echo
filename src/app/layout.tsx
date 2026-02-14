@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_SC, Courier_Prime } from "next/font/google";
+import { Noto_Sans_SC, Noto_Serif_SC, Courier_Prime } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -7,6 +7,12 @@ const notoSansSC = Noto_Sans_SC({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-noto-sans-sc",
+});
+
+const notoSerifSC = Noto_Serif_SC({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-noto-serif-sc",
 });
 
 const courierPrime = Courier_Prime({
@@ -34,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body
-        className={`${notoSansSC.variable} ${courierPrime.variable} ${jinghuaLaoSong.variable} antialiased`}
+        className={`${notoSansSC.variable} ${notoSerifSC.variable} ${courierPrime.variable} ${jinghuaLaoSong.variable} antialiased`}
       >
         {children}
       </body>

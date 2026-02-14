@@ -11,7 +11,7 @@ export default function ResultPage() {
     <Suspense
       fallback={
         <div className="h-[100dvh] flex flex-col items-center justify-center" style={{ background: "#EBE9E2" }}>
-          <div className="flex flex-col items-center gap-5" style={{ transform: "scale(1.1) translateY(-20px)" }}>
+          <div className="flex flex-col items-center gap-5" style={{ transform: "scale(1.1) translateY(-80px)" }}>
             <div className="flex items-center gap-[3.6px] h-6">
               {[9.6, 14.4, 19.2, 14.4, 9.6].map((h, i) => (
                 <div
@@ -41,21 +41,6 @@ export default function ResultPage() {
   );
 }
 
-const DEFAULT_PAIRS = [
-  { name: "碳基生物", location: "银河系第三旋臂" },
-  { name: "第 42 号观测员", location: "蓝色行星表面" },
-  { name: "未命名角色", location: "故事的第 1 页" },
-  { name: "某位路人甲", location: "历史的背景板里" },
-  { name: "某人", location: "世界的角落" },
-  { name: "发信人", location: "北纬30度" },
-  { name: "代号 K", location: "未知频段" },
-];
-
-const ALL_LOCATIONS = DEFAULT_PAIRS.map((p) => p.location);
-
-function getRandomItem<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
 
 function ResultPageContent() {
   const router = useRouter();
@@ -70,14 +55,10 @@ function ResultPageContent() {
   const paramLocation = searchParams.get("location") || "";
 
   const [userIdentity] = useState(() => {
-    if (paramName && paramLocation) {
-      return { name: paramName, location: paramLocation };
-    }
-    if (paramName) {
-      return { name: paramName, location: getRandomItem(ALL_LOCATIONS) };
-    }
-    const pair = getRandomItem(DEFAULT_PAIRS);
-    return { name: pair.name, location: pair.location };
+    return {
+      name: paramName || "匿名发送者",
+      location: paramLocation || "",
+    };
   });
 
   const [result, setResult] = useState({
@@ -191,7 +172,11 @@ function ResultPageContent() {
       <div className="h-[100dvh] flex flex-col" style={{ background: "#EBE9E2" }}>
         {/* Header */}
         <header className="px-6 pt-7 sm:px-8 sm:pt-8">
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-center gap-1.5">
+            <span
+              className="inline-block w-[3px] h-[12px] rounded-[1px] relative -top-[1px] ml-[2px]"
+              style={{ background: "rgba(217,44,61,0.8)" }}
+            />
             <span
               className="text-[15px]"
               style={{ fontFamily: "var(--font-jinghua), 'JingHua LaoSong', serif", color: "#1f1f1f" }}
@@ -208,7 +193,7 @@ function ResultPageContent() {
         </header>
 
         <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center gap-5" style={{ transform: "scale(1.1) translateY(-20px)" }}>
+          <div className="flex flex-col items-center gap-5" style={{ transform: "scale(1.1) translateY(-80px)" }}>
             {/* Wave loader */}
             <div className="flex items-center gap-[3.6px] h-6">
               {[9.6, 14.4, 19.2, 14.4, 9.6].map((h, i) => (
@@ -280,7 +265,11 @@ function ResultPageContent() {
     <div className="min-h-[100dvh] flex flex-col" style={{ background: "#EBE9E2" }}>
       {/* Header */}
       <header className="px-6 pt-7 sm:px-8 sm:pt-8">
-        <div className="flex items-baseline gap-1.5">
+        <div className="flex items-center gap-1.5">
+          <span
+            className="inline-block w-[3px] h-[12px] rounded-[1px] relative -top-[1px] ml-[2px]"
+            style={{ background: "rgba(217,44,61,0.8)" }}
+          />
           <span
             className="text-[15px]"
             style={{ fontFamily: "var(--font-jinghua), 'JingHua LaoSong', serif", color: "#1f1f1f" }}
